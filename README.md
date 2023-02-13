@@ -148,8 +148,39 @@ kubectl apply -f kuber-pod.yaml
 kubectl apply -f my-service.yaml
 ```
 
-Проверяем работоспособность пода командой
+Проверяем состояние пода и сервиса командами
 ```
 kubectl get pods
 ```
 
+```
+kubectl get pods
+```
+![](https://github.com/Viltonhoy/ros_test/blob/master/images/c.png)
+![](https://github.com/Viltonhoy/ros_test/blob/master/images/d.png)
+
+Получаем URL сервиса и проверяем вывод
+![](https://github.com/Viltonhoy/ros_test/blob/master/images/f.png)
+
+Для смены строки вывода на "Hello Sibintek!" дописываем в файле kuber-pod.yaml устанавливаем перемену окружения:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-kuber
+  labels:
+    app: web 
+spec:
+  containers:
+  - name: sibintek-app
+    image: app
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+    env: 
+    - name: VALUE
+      value: "Hello Sibintek!"  
+```
+
+![](https://github.com/Viltonhoy/ros_test/blob/master/images/g.png)
