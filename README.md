@@ -30,7 +30,7 @@ func helloDocker(w http.ResponseWriter, r *http.Request) {
 
 ## Cоздание и описание докер файла:
 
-```
+```dockerfile
 # syntax=docker/dockerfile:1
 ARG GO_VERSION=1.17
 
@@ -83,3 +83,73 @@ docker run -it -p 8080:8080 -e "VALUE= Hello Sibintek!" app
 Результат:
 
 ![](https://github.com/Viltonhoy/ros_test/blob/master/images/b.png)
+
+### Hазвертываниt приложения в Kubernetes
+
+- Для запуска одноузлового кластера Kubernetes на виртуальной машине используется гипервизор Hyper-v.
+
+Запускаем локальный кластер Kubernetes командой
+```
+minikube start --vm-driver=hyperv
+```
+
+## Описание приложения с помощью Kubernetes YAML
+
+Создаем файл развертывания в корневом каталоге с именем kuber-pod.yaml. Этот файл развернет приложение в движке Kubernetes. В метадате указываем лейбл пара ключ: значение, для дальнейшего использования в селекторе сервиса.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-kuber
+  labels:
+    app: web 
+spec:
+  containers:
+  - name: sibintek-app
+    image: app
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+```
+
+Создаем файл сервиса c именем my-service.yaml, для абстрагирования доступа к модулю Kubernetes, используя в селектору пару ключ:значение.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  type: NodePort
+  selector:
+    app: web 
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30001 
+```
+
+Так как работа ведется локально, загружаем локальный докер-образ косандой.
+
+```
+minikube image load app
+```
+
+Разворачиваем наши экземпляры cервиса и приложения в движке Kubernetes командами.
+
+```
+kubectl apply -f kuber-pod.yaml
+```
+
+```
+kubectl apply -f my-service.yaml
+```
+
+Проверяем работоспособность пода командой
+```
+kubectl get pods
+```
+
