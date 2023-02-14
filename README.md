@@ -162,7 +162,7 @@ kubectl get services
 Получаем URL сервиса и проверяем вывод
 ![](https://github.com/Viltonhoy/ros_test/blob/master/images/f.png)
 
-Для смены строки вывода на "Hello Sibintek!" дописываем в файле kuber-pod.yaml устанавливаем перемену окружения:
+Для смены строки вывода на "Hello Sibintek!" дописываем в файле kuber-pod.yaml переменную окружения:
 ```yaml
 apiVersion: v1
 kind: Pod
