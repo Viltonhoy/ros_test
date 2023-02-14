@@ -157,9 +157,11 @@ kubectl get pods
 kubectl get services
 ```
 ![](https://github.com/Viltonhoy/ros_test/blob/master/images/c.png)
+
 ![](https://github.com/Viltonhoy/ros_test/blob/master/images/d.png)
 
 Получаем URL сервиса и проверяем вывод
+
 ![](https://github.com/Viltonhoy/ros_test/blob/master/images/f.png)
 
 Для смены строки вывода на "Hello Sibintek!" дописываем в файле kuber-pod.yaml переменную окружения:
